@@ -2,30 +2,69 @@ import React, { useContext, useEffect, useState } from "react";
 import "./Cart.css";
 import { StoreContext } from "../../Context/StoreContext";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Cart = () => {
-  const { cartItems, food_list, removeFromCart, getTotalCartAmount, url } =
-    useContext(StoreContext);
+  const {
+    cartItems,
+    food_list,
+    removeFromCart,
+    getTotalCartAmount,
+    url,
+    isfree,
+    setisfree,
+  } = useContext(StoreContext);
   const navigate = useNavigate();
   const [isCartEmpty, setIsCartEmpty] = useState(true);
+  const [promo, setPromo] = useState("");
 
   useEffect(() => {
     const checkIfCartIsEmpty = () => {
-      if (food_list.length === 0) {
-        setIsCartEmpty(true);
-      } else {
-        const empty = food_list.every((item) => cartItems[item._id] === 0);
-        setIsCartEmpty(empty);
-      }
+      const empty = food_list.every((item) => !cartItems[item._id]);
+      setIsCartEmpty(empty);
     };
     checkIfCartIsEmpty();
   }, [cartItems, food_list]);
+
+  const subtotal = getTotalCartAmount();
+  const deliveryFee = subtotal > 0 ? (isfree ? 0 : 5) : 0;
+  const total = subtotal + deliveryFee;
+  subtotal>0?isfree:setisfree(false);
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    if (subtotal === 0) {
+      toast.error("Please add items to continue..");
+    } else {
+      navigate("/order");
+    }
+  }
+
+  function handlePromo(e) {
+    setPromo(e.target.value);
+  }
+
+  function handlePromoClick(e) {
+    e.preventDefault();
+    if (promo === "randomcode" && subtotal > 0) {
+      toast.info("You have unlocked free delivery!");
+      setisfree(true);
+    } else {
+      toast.error("Please check your cart amount and promo code");
+    }
+    setPromo("");
+  }
 
   return (
     <div className="cart">
       <div className="cart-items">
         <div className="cart-items-title">
-          <p>Items</p> <p>Title</p> <p>Price</p> <p>Quantity</p> <p>Total</p> <p>Remove</p>
+          <p>Items</p>
+          <p>Title</p>
+          <p>Price</p>
+          <p>Quantity</p>
+          <p>Total</p>
+          <p>Remove</p>
         </div>
         <br />
         <hr />
@@ -40,7 +79,10 @@ const Cart = () => {
               return (
                 <div key={index}>
                   <div className="cart-items-title cart-items-item">
-                    <img src={`${url}/images/${item.image}`} alt={item.name} />
+                    <img
+                      src={`${url}/images/${item.image}`}
+                      alt={item.name}
+                    />
                     <p>{item.name}</p>
                     <p>${item.price}</p>
                     <div>{cartItems[item._id]}</div>
@@ -66,27 +108,46 @@ const Cart = () => {
           <div>
             <div className="cart-total-details">
               <p>Subtotal</p>
-              <p>${getTotalCartAmount()}</p>
+              <p>${subtotal}</p>
             </div>
             <hr />
             <div className="cart-total-details">
               <p>Delivery Fee</p>
-              <p>${getTotalCartAmount() === 0 ? 0 : 5}</p>
+              <p>${deliveryFee}</p>
             </div>
             <hr />
+            {isfree && (
+              <>
+                <div className="cart-total-details">
+                  <p>Free Delivery</p>
+                  <p style={{ color: "red" }}>✅</p>
+                </div>
+                <hr />
+              </>
+            )}
             <div className="cart-total-details">
               <b>Total</b>
-              <b>${getTotalCartAmount() === 0 ? 0 : getTotalCartAmount() + 5}</b>
+              <b>${total}</b>
             </div>
           </div>
-          <button onClick={() => navigate("/order")}>PROCEED TO CHECKOUT</button>
+          <button onClick={handleSubmit}>PROCEED TO CHECKOUT</button>
         </div>
         <div className="cart-promocode">
           <div>
-            <p>If you have a promo code, Enter it here</p>
+            <p>Have any vouchers?</p>
             <div className="cart-promocode-input">
-              <input type="text" placeholder="promo code" />
-              <button style={{ cursor: "pointer" }}>Submit</button>
+              <input
+                type="text"
+                placeholder="Enter promo code"
+                value={promo}
+                onChange={handlePromo}
+              />
+              <button
+                style={{ cursor: "pointer" }}
+                onClick={handlePromoClick}
+              >
+                Submit
+              </button>
             </div>
           </div>
         </div>

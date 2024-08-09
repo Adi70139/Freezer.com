@@ -17,9 +17,20 @@ const PlaceOrder = () => {
     country: "",
     phone: "",
   });
-
-  const { getTotalCartAmount, token, food_list, cartItems, url} =
-    useContext(StoreContext);
+  
+  const { getTotalCartAmount, token, food_list, cartItems, url, isfree } = useContext(StoreContext);
+  
+  const calculateTotal = () => {
+    const subtotal = getTotalCartAmount();
+    const deliveryFee = isfree ? 0 : 5;
+    return subtotal + deliveryFee;
+  };
+  
+  const [total, setTotal] = useState(calculateTotal());
+  
+  useEffect(() => {
+    setTotal(calculateTotal());
+  }, [getTotalCartAmount, isfree]);
 
   const navigate = useNavigate();
 
@@ -32,7 +43,7 @@ const PlaceOrder = () => {
   const placeOrder = async (e) => {
     e.preventDefault();
     let orderItems = [];
-    food_list.map((item) => {
+    food_list.forEach((item) => {
       if (cartItems[item._id] > 0) {
           let itemInfo = item;
           itemInfo["quantity"] = cartItems[item._id];
@@ -43,7 +54,7 @@ const PlaceOrder = () => {
     let orderData = {
       address: data,
       items: orderItems,
-      amount: getTotalCartAmount() + 5,
+      amount: total, 
     };
     let response = await axios.post(url + "/api/order/place", orderData, {
       headers: { token },
@@ -60,10 +71,8 @@ const PlaceOrder = () => {
     if (!token) {
       toast.error("Log in to place the order");
       navigate("/cart");
-    } else if (getTotalCartAmount() === 0) {
-      navigate("/cart");
     }
-  }, [token]);
+  }, [token, navigate]);
 
   return (
     <form onSubmit={placeOrder} className="place-order">
@@ -159,14 +168,21 @@ const PlaceOrder = () => {
             <hr />
             <div className="cart-total-details">
               <p>Delivery Fee</p>
-              <p>${getTotalCartAmount() === 0 ? 0 : 5}</p>
+              <p>${isfree ? 0 : 5}</p>
             </div>
             <hr />
+            {isfree && (
+              <>
+                <div className="cart-total-details">
+                    <p>Free Delivery</p>
+                    <p style={{color:'red'}}>✅</p>
+                </div>
+                <hr/>
+              </>
+            )}
             <div className="cart-total-details">
               <b>Total</b>
-              <b>
-                ${getTotalCartAmount() === 0 ? 0 : getTotalCartAmount() + 5}
-              </b>
+              <b>${total}</b>
             </div>
           </div>
         </div>

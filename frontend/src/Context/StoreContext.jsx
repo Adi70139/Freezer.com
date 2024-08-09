@@ -5,15 +5,14 @@ import axios from "axios";
 export const StoreContext = createContext(null);
 
 const StoreContextProvider = (props) => {
-  // const url = "https://freezerburns-server.onrender.com";
-  const url="https://freezerburns-server-x8zz.onrender.com";
+  const url = "http://localhost:4000";
   const [food_list, setFoodList] = useState([]);
   const [cartItems, setCartItems] = useState({});
   const [token, setToken] = useState("");
   const [name,setName]=useState("");
+  const [isfree,setisfree]=useState(false)
 
   const addToCart = async (itemId) => {
-      console.log(cartItems);
       if (!cartItems[itemId]) {
         setCartItems((prev) => ({ ...prev, [itemId]: 1 }));
       } else {
@@ -90,8 +89,10 @@ const StoreContextProvider = (props) => {
     setToken,
     loadCartData,
     setCartItems,
-    name,
+    name, 
     setName,
+    isfree,
+    setisfree
   };
 
   return (
