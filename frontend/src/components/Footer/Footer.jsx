@@ -9,7 +9,7 @@ const Footer = () => {
         <div className="footer-content-left">
             <h1 style={{fontFamily:'serif'}}>Frezzer<span style={{fontFamily:'cursive',color:'red'}}>Burns</span></h1>
     
-            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+            <p>Your ultimate destination for delicious meals delivered straight to your door! Explore our extensive menu featuring gourmet dishes made from fresh, high-quality ingredients. Whether you're craving comfort food or healthy options, we've got something to satisfy every palate. Order now and experience the convenience of dining at home!</p>
             <div className="footer-social-icons">
                 <img src={assets.facebook_icon} alt="" />
                 <img src={assets.twitter_icon} alt="" />
