@@ -1,18 +1,21 @@
-import React, { useState, lazy, Suspense } from 'react';
+import React, { useState, Suspense } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
+import ProtectedRoute from './ProtectedRoute/ProtectedRoute';
+import Navbar from './components/Navbar/Navbar';
+import LoginPopup from './components/LoginPopup/LoginPopup';
 
-const Home = lazy(() => import('./pages/Home/Home'));
-const Footer = lazy(() => import('./components/Footer/Footer'));
-const Navbar = lazy(() => import('./components/Navbar/Navbar'));
-const Cart = lazy(() => import('./pages/Cart/Cart'));
-const LoginPopup = lazy(() => import('./components/LoginPopup/LoginPopup'));
-const PlaceOrder = lazy(() => import('./pages/PlaceOrder/PlaceOrder'));
-const MyOrders = lazy(() => import('./pages/MyOrders/MyOrders'));
-const Verify = lazy(() => import('./pages/Verify/Verify'));
-const TrackOrder = lazy(() => import('./pages/TrackOrder/TrackOrder'));
+const Home = React.lazy(() => import('./pages/Home/Home'));
+const Footer = React.lazy(() => import('./components/Footer/Footer'));
+const Cart = React.lazy(() => import('./pages/Cart/Cart'));
+const PlaceOrder = React.lazy(() => import('./pages/PlaceOrder/PlaceOrder'));
+const MyOrders = React.lazy(() => import('./pages/MyOrders/MyOrders'));
+const Verify = React.lazy(() => import('./pages/Verify/Verify'));
+const TrackOrder = React.lazy(() => import('./pages/TrackOrder/TrackOrder'));
+
+
 
 const App = () => {
   const [showLogin, setShowLogin] = useState(false);
@@ -20,23 +23,29 @@ const App = () => {
   return (
     <>
       <ToastContainer />
-      {showLogin ? <LoginPopup setShowLogin={setShowLogin} /> : <></>}
-      <Suspense fallback={<div className='verify'>
-      <div className="spinner"></div>
-    </div>}>
-        <div className='app'>
-          <Navbar setShowLogin={setShowLogin} />
+      {showLogin && <LoginPopup setShowLogin={setShowLogin} />}
+      <div className='app'>
+        <Navbar setShowLogin={setShowLogin} />
+        <Suspense fallback={
+          <div className='verify'>
+            <div className="spinner"></div>
+          </div>
+        }>
           <Routes>
             <Route path='/' element={<Home />} />
             <Route path='/cart' element={<Cart />} />
             <Route path='/order' element={<PlaceOrder />} />
             <Route path='/myorders' element={<MyOrders />} />
             <Route path='/verify' element={<Verify />} />
-            <Route path='/TrackOrder' element={<TrackOrder />} />
+            <Route path='/TrackOrder' element={
+              <ProtectedRoute>
+                   <TrackOrder />
+              </ProtectedRoute> 
+              } />
           </Routes>
-        </div>
-        <Footer />
-      </Suspense>
+          <Footer />
+        </Suspense>
+      </div>
     </>
   );
 };
