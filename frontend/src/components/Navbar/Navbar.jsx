@@ -19,8 +19,9 @@ const Navbar = ({ setShowLogin }) => {
   return (
     <div className="navbar">
       <Link to="/">
-         <h1 style={{fontFamily:'serif'}}>Frezzer<span style={{fontFamily:'cursive',color:'red'}}>Burns</span></h1>
-         
+         <div className="logoo">
+            <h1 style={{fontFamily:'serif'}}>Frezzer<span style={{fontFamily:'cursive',color:'red'}}>Burns</span></h1>
+         </div>
       </Link>
       <ul className="navbar-menu">
         <Link
