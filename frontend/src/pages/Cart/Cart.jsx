@@ -46,12 +46,18 @@ const Cart = () => {
 
   function handlePromoClick(e) {
     e.preventDefault();
-    if (promo === "randomcode" && subtotal > 0) {
-      toast.info("You have unlocked free delivery!");
-      setisfree(true);
-    } else {
-      toast.error("Please check your cart amount and promo code");
+    if(promo!=="randomcode")toast.error("Promocode expired or not Active")
+    else{
+        if (promo === "randomcode" && subtotal > 0 && !isfree) {
+          toast.info("You have unlocked free delivery!");
+          setisfree(true);
+        } else if(subtotal<=0){
+          toast.error("Please add items to the cart");
+        }else{
+          toast.info("You have already unlocked free delivery!");
+        }
     }
+   
     setPromo("");
   }
 
