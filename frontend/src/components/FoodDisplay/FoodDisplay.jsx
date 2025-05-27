@@ -26,7 +26,7 @@ const FoodDisplay = ({ category }) => {
           ))
         ) : (
           
-          <h2 style={{textAlign:"center", border:"2px solid black"}}>Food is awaited..Please bare with us🙌</h2>
+          <h2 style={{textAlign:"center", border:"2px solid black",width:"100%"}}>Food is awaited..Please bare with us🙌</h2>
         )}
       </div>
     </div>
