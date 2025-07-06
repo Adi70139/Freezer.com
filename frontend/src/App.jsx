@@ -6,7 +6,7 @@ import './App.css';
 import ProtectedRoute from './ProtectedRoute/ProtectedRoute';
 import Navbar from './components/Navbar/Navbar';
 import LoginPopup from './components/LoginPopup/LoginPopup';
-
+import OAuthSuccess from './pages/Oauth/OAuthSuccess';
 const Home = React.lazy(() => import('./pages/Home/Home'));
 const Footer = React.lazy(() => import('./components/Footer/Footer'));
 const Cart = React.lazy(() => import('./pages/Cart/Cart'));
@@ -37,6 +37,7 @@ const App = () => {
             <Route path='/order' element={<PlaceOrder />} />
             <Route path='/myorders' element={<MyOrders />} />
             <Route path='/verify' element={<Verify />} />
+            <Route path="/oauth-success" element={<OAuthSuccess />} />
             <Route path='/TrackOrder' element={
               <ProtectedRoute>
                    <TrackOrder />

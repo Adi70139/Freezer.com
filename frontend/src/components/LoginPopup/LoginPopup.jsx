@@ -100,6 +100,15 @@ const LoginPopup = ({ setShowLogin }) => {
             <span onClick={() => setCurrState("Login")}>Login here</span>
           </p>
         )}
+
+         <p>------------------- or ----------------------</p>
+        <button type="button" onClick={() => {
+               window.location.href = url+"/oauth2/google";
+            }}
+          >
+            Continue with Google
+          </button>
+
       </form>
     </div>
   );
