@@ -1,6 +1,8 @@
 import React, { useEffect, useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { StoreContext } from "../../Context/StoreContext";
+import cookies from "js-cookie";
+import { toast } from "react-toastify";
 
 const OAuthSuccess = () => {
   const navigate = useNavigate();
@@ -8,9 +10,8 @@ const OAuthSuccess = () => {
   const { setToken, setName, loadCartData } = useContext(StoreContext);
 
   useEffect(() => {
-    const query = new URLSearchParams(location.search);
-    const token = query.get("token");
-    const email = query.get("email");
+    const token=cookies.get("oauthToken");
+    const email = cookies.get("oauthEmail");
 
     if (token && email) {
       setToken(token);
@@ -19,14 +20,19 @@ const OAuthSuccess = () => {
       loadCartData({ token });
       navigate("/"); // Redirect to homepage or dashboard
     } else {
-      navigate("/login"); // In case token/email are missing
+      navigate("/login");
+      toast.error("Something went wrong..Please try again")// In case token/email are missing
     }
+
+    cookies.remove("oauthToken");
+    cookies.remove("oauthEmail");
+
   }, []);
 
   return (
     <div style={{ padding: "2rem", textAlign: "center" }}>
       <h2>Logging you in...</h2>
-      <p>Please wait while we complete the authentication process.</p>
+      <p>Please wait while we complete the authentication process...</p>
     </div>
   );
 };
