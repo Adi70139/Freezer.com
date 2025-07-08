@@ -4,9 +4,16 @@ import react from '@vitejs/plugin-react'
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
-
   server: {
-    historyApiFallback: true  // 👈 Important for dev fallback
+    fs: {
+      strict: false
+    }
+  },
+  build: {
+    outDir: 'dist'
+  },
+  preview: {
+    port: 4173,
+    strictPort: true
   }
-  
 })
