@@ -5,10 +5,12 @@ import FoodDisplay from '../../components/FoodDisplay/FoodDisplay'
 import AppDownload from '../../components/AppDownload/AppDownload'
 import { useEffect } from 'react';
 import cookies from 'js-cookie';
+import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
 
   const [category,setCategory] = useState("All")
+  const navigate = useNavigate();
 
    useEffect(() => {
       const token=cookies.get("oauthToken");
