@@ -7,6 +7,7 @@ import { useEffect } from 'react';
 import cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
 import {toast} from 'react-toastify';
+import { StoreContext } from "../../Context/StoreContext";
 
 const Home = () => {
 
