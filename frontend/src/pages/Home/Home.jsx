@@ -24,9 +24,6 @@ const Home = () => {
         setName(email);
         localStorage.setItem("token", token);
         loadCartData({ token });
-      } else {
-        navigate("/login");
-        toast.error("Something went wrong..Please try again")// In case token/email are missing
       }
   
       cookies.remove("oauthToken");
