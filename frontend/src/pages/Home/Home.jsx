@@ -6,10 +6,12 @@ import AppDownload from '../../components/AppDownload/AppDownload'
 import { useEffect } from 'react';
 import cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
+import {toast} from 'react-toastify';
 
 const Home = () => {
 
   const [category,setCategory] = useState("All")
+  const { setToken, setName, loadCartData } = useContext(StoreContext);
   const navigate = useNavigate();
 
    useEffect(() => {
