@@ -3,36 +3,12 @@ import Header from '../../components/Header/Header'
 import ExploreMenu from '../../components/ExploreMenu/ExploreMenu'
 import FoodDisplay from '../../components/FoodDisplay/FoodDisplay'
 import AppDownload from '../../components/AppDownload/AppDownload'
-import { useEffect } from 'react';
-import cookies from 'js-cookie';
-import { useNavigate } from 'react-router-dom';
-import {toast} from 'react-toastify';
-import { StoreContext } from "../../Context/StoreContext";
+
 
 const Home = () => {
 
   const [category,setCategory] = useState("All")
-  const { setToken, setName, loadCartData, setShowLogin } = useContext(StoreContext);
-  const navigate = useNavigate();
-
-   useEffect(() => {
-      const token=cookies.get("oauthToken");
-      const email = cookies.get("oauthEmail");
   
-      if (token && email) {
-        console.log(token)
-        setToken(token);
-        setName(email);
-        localStorage.setItem("token", token);
-        loadCartData({ token });
-        setShowLogin(false);
-      }
-  
-      cookies.remove("oauthToken");
-      cookies.remove("oauthEmail");
-  
-    }, []);
-
   return (
     <>
       <Header/>
