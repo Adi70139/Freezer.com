@@ -12,7 +12,7 @@ import { StoreContext } from "../../Context/StoreContext";
 const Home = () => {
 
   const [category,setCategory] = useState("All")
-  const { setToken, setName, loadCartData } = useContext(StoreContext);
+  const { setToken, setName, loadCartData, setShowLogin } = useContext(StoreContext);
   const navigate = useNavigate();
 
    useEffect(() => {
@@ -20,10 +20,12 @@ const Home = () => {
       const email = cookies.get("oauthEmail");
   
       if (token && email) {
+        console.log(token)
         setToken(token);
         setName(email);
         localStorage.setItem("token", token);
         loadCartData({ token });
+        setShowLogin(false);
       }
   
       cookies.remove("oauthToken");
