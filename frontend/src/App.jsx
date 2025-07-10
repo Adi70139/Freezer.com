@@ -6,7 +6,9 @@ import './App.css';
 import ProtectedRoute from './ProtectedRoute/ProtectedRoute';
 import Navbar from './components/Navbar/Navbar';
 import LoginPopup from './components/LoginPopup/LoginPopup';
-import OAuthSuccess from './pages/Oauth/OAuthSuccess';
+
+
+const OAuthSuccess = React.lazy(() => import('./pages/Oauth/OAuthSuccess'));
 const Home = React.lazy(() => import('./pages/Home/Home'));
 const Footer = React.lazy(() => import('./components/Footer/Footer'));
 const Cart = React.lazy(() => import('./pages/Cart/Cart'));
