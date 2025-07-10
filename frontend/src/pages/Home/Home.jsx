@@ -14,20 +14,23 @@ const Home = () => {
     const { setToken, setName, loadCartData } = useContext(StoreContext);
   
     useEffect(() => {
-      const token=cookies.get("oauthToken");
-      const email = cookies.get("oauthEmail");
-  
-      if (token && email) {
-        setToken(token);
-        setName(email);
-        localStorage.setItem("token", token);
-        loadCartData({ token });
-        toast.success("Logged in successfully");
-      }
-  
-      cookies.remove("oauthToken");
-      cookies.remove("oauthEmail");
-  
+
+      setTimeout((()=>{
+           const token=cookies.get("oauthToken");
+           const email = cookies.get("oauthEmail");
+      
+            console.log("Token:", token);
+            if (token && email) {
+              setToken(token);
+              setName(email);
+              localStorage.setItem("token", token);
+              loadCartData({ token });
+              toast.success("Logged in successfully");
+            }
+        
+            cookies.remove("oauthToken");
+            cookies.remove("oauthEmail");
+      }),200)
     }, []);
   
   return (
