@@ -6,32 +6,32 @@ import AppDownload from '../../components/AppDownload/AppDownload'
 import { StoreContext } from "../../Context/StoreContext";
 import cookies from "js-cookie";
 import { toast } from "react-toastify";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Home = () => {
 
-  const [category,setCategory] = useState("All")
+  const { setToken, setName, loadCartData } = useContext(StoreContext);
+  const [category, setCategory] = useState("All");
 
-    const { setToken, setName, loadCartData } = useContext(StoreContext);
-  
-    useEffect(() => {
+  const location = useLocation();
+  const navigate = useNavigate();
 
-      setTimeout((()=>{
-           const token=cookies.get("oauthToken");
-           const email = cookies.get("oauthEmail");
-      
-            console.log("Token:", token);
-            if (token && email) {
-              setToken(token);
-              setName(email);
-              localStorage.setItem("token", token);
-              loadCartData({ token });
-              toast.success("Logged in successfully");
-            }
-        
-            cookies.remove("oauthToken");
-            cookies.remove("oauthEmail");
-      }),200)
-    }, []);
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const token = params.get("token");
+    const email = params.get("email");
+
+    if (token && email) {
+      setToken(token);
+      setName(email);
+      localStorage.setItem("token", token);
+      loadCartData({ token });
+      toast.success("Logged in successfully");
+
+      // clear the query params from URL
+      navigate("/", { replace: true });
+    }
+  }, []);
   
   return (
     <>
